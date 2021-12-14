@@ -8,7 +8,8 @@ public class JarvisAlgo : MonoBehaviour, IAlgorithm
     public void ExecuteAlgorithm()
     {
         PointsManager.DeleteLines();
-        JarvisAlgorithm(PointsManager.Points);
+        List<GameObject> copy = new List<GameObject>(PointsManager.Points);
+        JarvisAlgorithm(copy);
     }
 
     private void JarvisAlgorithm(List<GameObject> points)

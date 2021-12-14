@@ -53,29 +53,17 @@ public class GrahamScan : MonoBehaviour, IAlgorithm
                (p1.y - p2.y) * (p1.y - p2.y);
     }
 
-    private int Compare(Vector3 p1, Vector3 p2)
-    {
-        int orientation = PointsManager.Orientation(p0.transform.position, p1, p2);
-        if (orientation == 0)
-        {
-            var position = p0.transform.position;
-            return (DistSq(position, p2) >= DistSq(position, p1) ? -1 : 1);
-        }
-
-        return (orientation == 2) ? -1 : 1;
-    }
-
     private void GrahamScanAlgo(List<GameObject> points)
     {
         // Point le plus haut en y
         float yMin = points[0].transform.position.y;
         int min = 0;
         int n = points.Count;
-        for (int i = 0; i < n; i++)
+        for (int i = 1; i < n; i++)
         {
             float y = points[i].transform.position.y;
 
-            if (y < min || Math.Abs(yMin - y) < 0.1 && points[i].transform.position.x < points[min].transform.position.x)
+            if (y < min || Math.Abs(yMin - y) < 1 && points[i].transform.position.x < points[min].transform.position.x)
             {
                 yMin = points[i].transform.position.y;
                 min = i;
@@ -87,17 +75,9 @@ public class GrahamScan : MonoBehaviour, IAlgorithm
         p0 = points[0];
 
         OrientationComparer oc = new OrientationComparer(p0);
-        // Debug.Log("before sort");
-        // foreach (var p in points)
-        // {
-        //     Debug.Log("x : " + p.transform.position.x + " y : " + p.transform.position.y);
-        // }
-        points.Sort(0, points.Count-1, oc);
-        // Debug.Log("after sort");
-        // foreach (var p in points)
-        // {
-        //     Debug.Log("x : " + p.transform.position.x + " y : " + p.transform.position.y);
-        // }
+
+        points.Sort(0, points.Count, oc);
+
         int m = 1;
         for (int i = 0; i < n; i++)
         {
@@ -121,7 +101,7 @@ public class GrahamScan : MonoBehaviour, IAlgorithm
         stack.Push(points[1]);
         stack.Push(points[2]);
         
-        for (int i = 0; i < m; i++)
+        for (int i = 3; i < m; i++)
         {
             while (PointsManager.Orientation(NextToTop(stack).transform.position, stack.Peek().transform.position,
                        points[i].transform.position) != 2)
@@ -150,6 +130,7 @@ public class GrahamScan : MonoBehaviour, IAlgorithm
     public void ExecuteAlgorithm()
     {
         PointsManager.DeleteLines();
-        GrahamScanAlgo(PointsManager.Points);
+        List<GameObject> copy = new List<GameObject>(PointsManager.Points);
+        GrahamScanAlgo(copy);
     }
 }
