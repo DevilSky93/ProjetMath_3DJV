@@ -7,20 +7,12 @@ public class JarvisAlgo : MonoBehaviour, IAlgorithm
 {
     public void ExecuteAlgorithm()
     {
+        PointsManager.DeleteLines();
         JarvisAlgorithm(PointsManager.Points);
     }
 
     private void JarvisAlgorithm(List<GameObject> points)
     {
-        if (PointsManager.lineRenderers.Count > 0)
-        {
-            for (int i = PointsManager.lineRenderers.Count-1; i >= 0; i--)
-            {
-                Destroy(PointsManager.lineRenderers[i].gameObject);
-                PointsManager.lineRenderers.RemoveAt(i);
-            }   
-        }
-
         int n = PointsManager.Points.Count;
         if (n < 3) return;
         List<GameObject> hull = new List<GameObject>();

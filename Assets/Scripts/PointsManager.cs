@@ -56,4 +56,24 @@ public class PointsManager : MonoBehaviour
     {
         _algorithmes[(int)Choice].ExecuteAlgorithm();
     }
+
+    public static void DeleteLines()
+    {
+        if (lineRenderers.Count <= 0) return;
+        for (int i = lineRenderers.Count-1; i >= 0; i--)
+        {
+            Destroy(lineRenderers[i].gameObject);
+            lineRenderers.RemoveAt(i);
+        }
+    }
+    
+    public static void DeletePoints()
+    {
+        if (Points.Count <= 0) return;
+        for (int i = Points.Count-1; i >= 0; i--)
+        {
+            Destroy(Points[i].gameObject);
+            Points.RemoveAt(i);
+        }
+    }
 }

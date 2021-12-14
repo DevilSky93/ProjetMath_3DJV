@@ -87,9 +87,17 @@ public class GrahamScan : MonoBehaviour, IAlgorithm
         p0 = points[0];
 
         OrientationComparer oc = new OrientationComparer(p0);
-        Debug.Log("before sort");
+        // Debug.Log("before sort");
+        // foreach (var p in points)
+        // {
+        //     Debug.Log("x : " + p.transform.position.x + " y : " + p.transform.position.y);
+        // }
         points.Sort(0, points.Count-1, oc);
-        Debug.Log("after sort");
+        // Debug.Log("after sort");
+        // foreach (var p in points)
+        // {
+        //     Debug.Log("x : " + p.transform.position.x + " y : " + p.transform.position.y);
+        // }
         int m = 1;
         for (int i = 0; i < n; i++)
         {
@@ -98,35 +106,35 @@ public class GrahamScan : MonoBehaviour, IAlgorithm
             {
                 i++;
             }
-
+        
             points[m] = points[i];
             m++;
         }
-
+        
         if (m < 3)
         {
             return;
         }
-
+        
         Stack<GameObject> stack = new Stack<GameObject>();
         stack.Push(points[0]);
         stack.Push(points[1]);
         stack.Push(points[2]);
-
+        
         for (int i = 0; i < m; i++)
         {
             while (PointsManager.Orientation(NextToTop(stack).transform.position, stack.Peek().transform.position,
                        points[i].transform.position) != 2)
             {
-                stack.Push(points[i]);
+                stack.Pop();
             }
+            stack.Push(points[i]);
         }
-
+        
         GameObject firstPoint = stack.Peek();
         while (stack.Count > 0)
         {
-            GameObject p1 = stack.Peek();
-            stack.Pop();
+            GameObject p1 = stack.Pop();
             if (stack.Count <= 0)
             {
                 PointsManager.DrawLines(p1, firstPoint);
@@ -134,7 +142,6 @@ public class GrahamScan : MonoBehaviour, IAlgorithm
             else
             {
                 GameObject p2 = stack.Peek();
-                stack.Pop();
                 PointsManager.DrawLines(p1, p2);
             }
         }
@@ -142,6 +149,7 @@ public class GrahamScan : MonoBehaviour, IAlgorithm
 
     public void ExecuteAlgorithm()
     {
+        PointsManager.DeleteLines();
         GrahamScanAlgo(PointsManager.Points);
     }
 }

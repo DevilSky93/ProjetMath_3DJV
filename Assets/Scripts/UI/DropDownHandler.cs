@@ -8,7 +8,6 @@ namespace UI
     public class DropDownHandler : MonoBehaviour
     {
         public Text textBox;
-        
 
         private void Start()
         {
@@ -46,6 +45,12 @@ namespace UI
         public void ExecuteAlgo()
         {
             PointsManager.ExecuteAlgorithm();
+        }
+
+        public void DeletePoints()
+        {
+            PointsManager.DeleteLines();
+            PointsManager.DeletePoints();
         }
     }
 }
