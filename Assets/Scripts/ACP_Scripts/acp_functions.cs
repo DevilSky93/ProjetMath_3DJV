@@ -27,6 +27,20 @@ public class acp_functions : MonoBehaviour
         return new Vector3(bary_x, bary_y, bary_z);
     }
 
+    List<Vector3> centrateDatas(List<Vector3> points, Vector3 barycenter)
+    {
+        List<Vector3> v_centrateDatas = new List<Vector3>();
+        float x , y, z;
+        foreach (Vector3 v in points)
+        {
+            x = v.x - barycenter.x;
+            y = v.y - barycenter.y;
+            z = v.z - barycenter.z;
+            v_centrateDatas.Add(new Vector3(x, y, z));
+        }
+        return v_centrateDatas;
+    }
+
     void testList()
     {
         Vector3 ground1p1 = new Vector3(1f, 1f, 1f);
@@ -42,9 +56,16 @@ public class acp_functions : MonoBehaviour
     void Start()
     {
         testList();
-        
+
         Vector3 barycenter = calculateBarycenter(TestPoints);
         print(barycenter);
+
+        TestPoints = centrateDatas(TestPoints, barycenter);
+
+        /*foreach (var p in TestPoints)
+        {
+            Debug.Log(p);
+        }*/
 
     }
 
