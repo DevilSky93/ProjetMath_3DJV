@@ -41,11 +41,35 @@ public class acp_functions : MonoBehaviour
         return v_centrateDatas;
     }
 
+    double[,] matrixCov(List<Vector3> points)
+    {
+        const int MATRIX_ROWS = 3;
+        const int MATRIX_COLUMNS = 3;
+        double[,] matCov = new double[MATRIX_ROWS, MATRIX_COLUMNS];
+        double covariance;
+        Vector3 barycenter = calculateBarycenter(points);
+
+        for (int i = 0; i < MATRIX_ROWS; i++)
+        {
+            for (int j = 0; j < MATRIX_COLUMNS; j++)
+            {
+                covariance = 0.0;
+                for (int n = 0; n<points.Count; n++)
+                {
+                    covariance += points[n][i] * points[n][j] - barycenter[j] * points[n][i] - barycenter[i] * points[n][j] + barycenter[i] * barycenter[j];
+                }
+
+                matCov[i, j] = covariance/points.Count;
+            }
+        }
+        return matCov;
+    }
+
     void testList()
     {
         Vector3 ground1p1 = new Vector3(1f, 1f, 1f);
         Vector3 ground1p2 = new Vector3(2f, 3f, 4f);
-        Vector3 ground1p3 = new Vector3(2f, 1f, 1f);
+        Vector3 ground1p3 = new Vector3(2f, 6f, 1f);
         Vector3 ground1p4 = new Vector3(1f, 3f, 4f);
         TestPoints.Add(ground1p1);
         TestPoints.Add(ground1p2);
@@ -58,14 +82,17 @@ public class acp_functions : MonoBehaviour
         testList();
 
         Vector3 barycenter = calculateBarycenter(TestPoints);
-        print(barycenter);
 
         TestPoints = centrateDatas(TestPoints, barycenter);
 
-        /*foreach (var p in TestPoints)
+        double[,] matCov = matrixCov(TestPoints);
+        /*foreach (var cov in matCov)
         {
-            Debug.Log(p);
+            Debug.Log(cov);
         }*/
+        /*print(matCov[0, 0] + " " + matCov[0, 1] + " " + matCov[0, 2]);
+        print(matCov[1, 0] + " " + matCov[1, 1] + " " + matCov[1, 2]);
+        print(matCov[2, 0] + " " + matCov[2, 1] + " " + matCov[2, 2]);*/
 
     }
 
