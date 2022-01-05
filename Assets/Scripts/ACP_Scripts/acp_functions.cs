@@ -27,8 +27,10 @@ public class acp_functions : MonoBehaviour
         return new Vector3(bary_x, bary_y, bary_z);
     }
 
-    List<Vector3> centrateDatas(List<Vector3> points, Vector3 barycenter)
+    List<Vector3> centrateDatas(List<Vector3> points)
     {
+        Vector3 barycenter = calculateBarycenter(TestPoints);
+
         List<Vector3> v_centrateDatas = new List<Vector3>();
         float x , y, z;
         foreach (Vector3 v in points)
@@ -41,17 +43,15 @@ public class acp_functions : MonoBehaviour
         return v_centrateDatas;
     }
 
-    double[,] matrixCov(List<Vector3> points)
+    Matrix3x3 matrixCov(List<Vector3> points)
     {
-        const int MATRIX_ROWS = 3;
-        const int MATRIX_COLUMNS = 3;
-        double[,] matCov = new double[MATRIX_ROWS, MATRIX_COLUMNS];
+        Matrix3x3 matCov = new Matrix3x3();
         double covariance;
         Vector3 barycenter = calculateBarycenter(points);
 
-        for (int i = 0; i < MATRIX_ROWS; i++)
+        for (int i = 0; i < 3; i++)
         {
-            for (int j = 0; j < MATRIX_COLUMNS; j++)
+            for (int j = 0; j < 3; j++)
             {
                 covariance = 0.0;
                 for (int n = 0; n<points.Count; n++)
@@ -59,17 +59,51 @@ public class acp_functions : MonoBehaviour
                     covariance += points[n][i] * points[n][j] - barycenter[j] * points[n][i] - barycenter[i] * points[n][j] + barycenter[i] * barycenter[j];
                 }
 
-                matCov[i, j] = covariance/points.Count;
+                matCov.mat[i, j] = (float)covariance /points.Count;
             }
         }
         return matCov;
     }
 
+    float maxAbsValue(Vector3 v3)
+    {
+        return Mathf.Max(Mathf.Max(Mathf.Abs(v3.x), Mathf.Abs(v3.y)), Mathf.Abs(v3.z));
+    }
+
+    Vector3 Eigenvector(Matrix3x3 matCov)
+    {
+        Vector3 v0 = new Vector3(0f, 0f, 1f);
+        int ITERATIONS = 100;
+
+        Vector3 vk = matCov.multiplyVector(v0);
+        float lambdaK = maxAbsValue(vk);
+        vk = (1 / lambdaK) * vk;
+
+        for (int k=1; k<ITERATIONS; k++)
+        {
+            //print("---");
+            vk = matCov.multiplyVector(vk);
+            //print(vk.x + " " + vk.y + " " + vk.z);
+            lambdaK = maxAbsValue(vk);
+            //print(1 / lambdaK);
+            vk = (1 / lambdaK) * vk;
+            //print(vk.x + " " + vk.y + " " + vk.z);
+        }
+        print(lambdaK);
+
+        return vk;
+    }
+
     void testList()
     {
-        Vector3 ground1p1 = new Vector3(1f, 1f, 1f);
+        /*Vector3 ground1p1 = new Vector3(1f, 1f, 1f);
         Vector3 ground1p2 = new Vector3(2f, 3f, 4f);
-        Vector3 ground1p3 = new Vector3(2f, 6f, 1f);
+        Vector3 ground1p3 = new Vector3(2f, 5f, 1f);
+        Vector3 ground1p4 = new Vector3(1f, 3f, 4f);*/
+        // -> 0, 0, 1 eightenvector
+        Vector3 ground1p1 = new Vector3(2f, 1f, 2f);
+        Vector3 ground1p2 = new Vector3(3f, 3f, 4f);
+        Vector3 ground1p3 = new Vector3(2f, 5f, 1f);
         Vector3 ground1p4 = new Vector3(1f, 3f, 4f);
         TestPoints.Add(ground1p1);
         TestPoints.Add(ground1p2);
@@ -81,18 +115,16 @@ public class acp_functions : MonoBehaviour
     {
         testList();
 
-        Vector3 barycenter = calculateBarycenter(TestPoints);
+        TestPoints = centrateDatas(TestPoints);
 
-        TestPoints = centrateDatas(TestPoints, barycenter);
+        Matrix3x3 matCov = matrixCov(TestPoints);
 
-        double[,] matCov = matrixCov(TestPoints);
-        /*foreach (var cov in matCov)
-        {
-            Debug.Log(cov);
-        }*/
-        /*print(matCov[0, 0] + " " + matCov[0, 1] + " " + matCov[0, 2]);
-        print(matCov[1, 0] + " " + matCov[1, 1] + " " + matCov[1, 2]);
-        print(matCov[2, 0] + " " + matCov[2, 1] + " " + matCov[2, 2]);*/
+        matCov.display();
+
+        Vector3 eigenvector = Eigenvector(matCov);
+
+        print(eigenvector.x + " " + eigenvector.y + " " + eigenvector.z);
+
 
     }
 
