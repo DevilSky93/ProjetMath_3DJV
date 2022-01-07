@@ -7,6 +7,42 @@ public class acp_functions : MonoBehaviour
     List<Vector3> TestPoints = new List<Vector3>();
     // Start is called before the first frame update
 
+    void testList()
+    {
+        /*Vector3 ground1p1 = new Vector3(1f, 1f, 1f);
+        Vector3 ground1p2 = new Vector3(2f, 3f, 4f);
+        Vector3 ground1p3 = new Vector3(2f, 5f, 1f);
+        Vector3 ground1p4 = new Vector3(1f, 3f, 4f);*/
+        // D'après DCode : 
+        //λ1 = 2.25 -> {0.,0.,1.}
+        //λ2 = 2.13278 -> {0.256668,0.9665,0.}
+        //λ3 = 0.117218 -> {−0.9665,0.256668,0.}
+
+        Vector3 ground1p1 = new Vector3(2f, 1f, 2f);
+        Vector3 ground1p2 = new Vector3(3f, 3f, 4f);
+        Vector3 ground1p3 = new Vector3(2f, 5f, 1f);
+        Vector3 ground1p4 = new Vector3(1f, 3f, 4f);
+        // D'après DCode : 
+        //λ1 = 2.3676 -> {0.,−0.805691,0.592336}
+        //λ2 = 1.3199 -> {0.,0.592336,0.805691}
+        //λ3 = 0.5 -> {1.,0.,0.}
+
+        //TODO Erreur avec ce dataset
+        /*Vector3 ground1p1 = new Vector3(6f, 2f, 4f);
+        Vector3 ground1p2 = new Vector3(4f, 6f, 2f);
+        Vector3 ground1p3 = new Vector3(6f, 4f, 2f);
+        Vector3 ground1p4 = new Vector3(4f, 4f, 4f);*/
+        // D'après DCode : 
+        //λ1=3→{1,−2,1}
+        //λ2=1→{−1,0,1}
+        //λ3=0→{1,1,1}
+
+        TestPoints.Add(ground1p1);
+        TestPoints.Add(ground1p2);
+        TestPoints.Add(ground1p3);
+        TestPoints.Add(ground1p4);
+    }
+
     Vector3 calculateBarycenter(List<Vector3> points)
     {
         float bary_x=0f, bary_y = 0f, bary_z = 0f;
@@ -81,35 +117,36 @@ public class acp_functions : MonoBehaviour
 
         for (int k=1; k<ITERATIONS; k++)
         {
-            //print("---");
             vk = matCov.multiplyVector(vk);
-            //print(vk.x + " " + vk.y + " " + vk.z);
             lambdaK = maxAbsValue(vk);
-            //print(1 / lambdaK);
             vk = (1 / lambdaK) * vk;
-            //print(vk.x + " " + vk.y + " " + vk.z);
         }
-        print(lambdaK);
+        //print("lambda K : " + lambdaK);
 
-        return vk;
+        return vk.normalized;
     }
 
-    void testList()
+    List<Vector3> projectedDatas(List<Vector3> points, Vector3 eigenvector)
     {
-        /*Vector3 ground1p1 = new Vector3(1f, 1f, 1f);
-        Vector3 ground1p2 = new Vector3(2f, 3f, 4f);
-        Vector3 ground1p3 = new Vector3(2f, 5f, 1f);
-        Vector3 ground1p4 = new Vector3(1f, 3f, 4f);*/
-        // -> 0, 0, 1 eightenvector
-        Vector3 ground1p1 = new Vector3(2f, 1f, 2f);
-        Vector3 ground1p2 = new Vector3(3f, 3f, 4f);
-        Vector3 ground1p3 = new Vector3(2f, 5f, 1f);
-        Vector3 ground1p4 = new Vector3(1f, 3f, 4f);
-        TestPoints.Add(ground1p1);
-        TestPoints.Add(ground1p2);
-        TestPoints.Add(ground1p3);
-        TestPoints.Add(ground1p4);
+        List<Vector3> projectedDatas = new List<Vector3>();
+        float x, y, z;
+        Vector3 prod_v = new Vector3();
+        float prod;
+
+        foreach (Vector3 A in points)
+        {
+            prod_v = Vector3.Scale(A, eigenvector);
+            prod = prod_v.x + prod_v.y + prod_v.z;
+            x = prod * eigenvector.x;
+            y = prod * eigenvector.y;
+            z = prod * eigenvector.z;
+            //print("projectedData : " + x + " " + y + " " + z);
+            projectedDatas.Add(new Vector3(x, y, z));
+        }
+
+        return projectedDatas;
     }
+
 
     void Start()
     {
@@ -119,12 +156,13 @@ public class acp_functions : MonoBehaviour
 
         Matrix3x3 matCov = matrixCov(TestPoints);
 
-        matCov.display();
+        //matCov.display();
 
         Vector3 eigenvector = Eigenvector(matCov);
 
-        print(eigenvector.x + " " + eigenvector.y + " " + eigenvector.z);
+        print("eigenvector : " + eigenvector.x + " " + eigenvector.y + " " + eigenvector.z);
 
+        List<Vector3> TestProjections = projectedDatas(TestPoints, eigenvector);
 
     }
 

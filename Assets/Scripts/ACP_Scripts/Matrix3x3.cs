@@ -24,8 +24,10 @@ public class Matrix3x3
 
     public void display()
     {
+        Debug.Log("___Matrice de covariance : ___");
         Debug.Log(mat[0, 0] + " " + mat[0, 1] + " " + mat[0, 2]);
         Debug.Log(mat[1, 0] + " " + mat[1, 1] + " " + mat[1, 2]);
         Debug.Log(mat[2, 0] + " " + mat[2, 1] + " " + mat[2, 2]);
+        Debug.Log("______________________________");
     }
 }
