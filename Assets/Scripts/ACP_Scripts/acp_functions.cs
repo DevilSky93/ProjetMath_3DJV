@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//TODO Créer les meshs à partir d'un perso 3D https://www.mixamo.com/#/?page=1&type=Character
+//Blender tuto https://www.youtube.com/watch?v=-QfLdbzSZdw
 
 public class acp_functions : MonoBehaviour
 {
