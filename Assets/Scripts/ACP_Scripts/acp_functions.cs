@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO Créer les meshs à partir d'un perso 3D https://www.mixamo.com/#/?page=1&type=Character
+
 public class acp_functions : MonoBehaviour
 {
     List<Vector3> TestPoints = new List<Vector3>();
