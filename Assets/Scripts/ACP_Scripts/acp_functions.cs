@@ -149,6 +149,94 @@ public class acp_functions : MonoBehaviour
         return projectedDatas;
     }
 
+    //Inutile?
+    float lengthPointFromOrigin(Vector3 point)
+    {
+        return Mathf.Sqrt(Mathf.Pow(point.x, 2) + Mathf.Pow(point.y, 2) + Mathf.Pow(point.z, 2));
+    }
+
+    (Vector3, Vector3) projectedDatasExtremes(List<Vector3> points_G, List<Vector3> points_projected, Vector3 eigenvector)
+    {
+        Vector3 min = new Vector3();
+        float minAlpha = 0;
+        int minIndex = -1;
+        Vector3 max = new Vector3();
+        float maxAlpha = 0;
+        int maxIndex = -1;
+
+        int alphaCalculator = 0;
+        if (eigenvector.x == 0)
+        {
+            alphaCalculator = 1;
+            if (eigenvector.y == 0)
+            {
+                alphaCalculator = 2;
+                if (eigenvector.z == 0)
+                {
+                    print("ERROR : eigenvector = (0,0,0)");
+                }
+            }
+        }
+
+
+        float tmpAlpha;
+        for(int i = 0; i< points_projected.Count; i++)
+        {
+            tmpAlpha = eigenvector[alphaCalculator] / points_projected[i][alphaCalculator];
+            if (tmpAlpha < 0)
+            {
+                if (minIndex == -1)
+                {
+                    minIndex = i;
+                    minAlpha = tmpAlpha;
+                }
+                else
+                {
+                    if (minAlpha > tmpAlpha)
+                    {
+                        minAlpha = tmpAlpha;
+                    }
+                }
+            }
+            else
+            {
+                if (maxIndex == -1)
+                {
+                    maxIndex = i;
+                    maxAlpha = tmpAlpha;
+                }
+                else
+                {
+                    if (maxAlpha < tmpAlpha)
+                    {
+                        maxAlpha = tmpAlpha;
+                    }
+                }
+            }
+        }
+
+        if (minIndex != -1)
+        {
+            min.x = points_projected[minIndex].x + points_G[minIndex].x;
+            min.y = points_projected[minIndex].y + points_G[minIndex].y;
+            min.z = points_projected[minIndex].z + points_G[minIndex].z;
+
+        }
+        if (maxIndex != -1)
+        {
+            max.x = points_projected[maxIndex].x + points_G[maxIndex].x;
+            max.y = points_projected[maxIndex].y + points_G[maxIndex].y;
+            max.z = points_projected[maxIndex].z + points_G[maxIndex].z;
+        }
+
+
+        (Vector3, Vector3) pMinMax = (min, max);
+        /*print("min : " + pMinMax.Item1.x + " " + pMinMax.Item1.y + " " + pMinMax.Item1.z);
+        print("max : " + pMinMax.Item2.x + " " + pMinMax.Item2.y + " " + pMinMax.Item2.z);*/
+
+        return pMinMax;
+    }
+
 
     void Start()
     {
@@ -165,6 +253,8 @@ public class acp_functions : MonoBehaviour
         print("eigenvector : " + eigenvector.x + " " + eigenvector.y + " " + eigenvector.z);
 
         List<Vector3> TestProjections = projectedDatas(TestPoints, eigenvector);
+
+        (Vector3, Vector3) segmentMinMax = projectedDatasExtremes(TestPoints, TestProjections, eigenvector);
 
     }
 
