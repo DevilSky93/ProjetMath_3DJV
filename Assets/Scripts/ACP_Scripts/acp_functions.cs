@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Blender tuto https://www.youtube.com/watch?v=-QfLdbzSZdw
-
 public class acp_functions : MonoBehaviour
 {
     List<Vector3> TestPoints = new List<Vector3>();
@@ -250,7 +248,7 @@ public class acp_functions : MonoBehaviour
 
         Vector3 eigenvector = Eigenvector(matCov);
 
-        print("eigenvector : " + eigenvector.x + " " + eigenvector.y + " " + eigenvector.z);
+        //print("eigenvector : " + eigenvector.x + " " + eigenvector.y + " " + eigenvector.z);
 
         List<Vector3> TestProjections = projectedDatas(TestPoints, eigenvector);
 
