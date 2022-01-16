@@ -125,9 +125,9 @@ public class acp_functions : MonoBehaviour
 
     float maxAbsValue(Vector3 v3)
     {
-        //return Mathf.Max(Mathf.Max(Mathf.Abs(v3.x), Mathf.Abs(v3.y)), Mathf.Abs(v3.z));
+        return Mathf.Max(Mathf.Max(Mathf.Abs(v3.x), Mathf.Abs(v3.y)), Mathf.Abs(v3.z));
         //Retourner LA PLUS GRANDE COMPOSANTE
-        if(Mathf.Abs(v3.x)< Mathf.Abs(v3.y))
+        /*if(Mathf.Abs(v3.x)< Mathf.Abs(v3.y))
         {
             if (Mathf.Abs(v3.y) < Mathf.Abs(v3.z))
                 return v3.z;
@@ -135,7 +135,7 @@ public class acp_functions : MonoBehaviour
         }
         if (Mathf.Abs(v3.x) < Mathf.Abs(v3.z))
             return v3.z;
-        return v3.x;
+        return v3.x;*/
     }
 
     public Vector3 Eigenvector(Matrix3x3 matCov)
@@ -202,7 +202,6 @@ public class acp_functions : MonoBehaviour
             }
         }
 
-
         float tmpAlpha;
         for(int i = 0; i< points_projected.Count; i++)
         {
@@ -262,6 +261,42 @@ public class acp_functions : MonoBehaviour
         (Vector3, Vector3) pMinMax = (min, max);
 
         return pMinMax;
+    }
+
+    public (Vector3, Vector3) projectedDatasExtremesSAMI(List<Vector3> points_G, List<Vector3> points_projected, Vector3 eigenvector)
+    {
+        Vector3 barycenter = calculateBarycenter(points_G);
+        float maxPositiveSqrMagnitude = .0f;
+        float maxNegativeSqrMagnitude = .0f;
+
+        Vector3 positiveExtremus = Vector3.zero;
+        Vector3 negativeExtremus = Vector3.zero;
+
+        foreach (Vector3 point in points_G)
+        {
+            Vector3 projectedPoint = Vector3.Dot(point, eigenvector) * eigenvector;
+            float alpha = Vector3.Dot(projectedPoint, eigenvector);
+
+            if(alpha > 0)
+            {
+                if (projectedPoint.sqrMagnitude > maxPositiveSqrMagnitude)
+                {
+                    maxPositiveSqrMagnitude = projectedPoint.sqrMagnitude;
+                    positiveExtremus = projectedPoint;
+                }
+            }
+            else if (alpha < 0)
+            {
+                if (projectedPoint.sqrMagnitude > maxNegativeSqrMagnitude)
+                {
+                    maxNegativeSqrMagnitude = projectedPoint.sqrMagnitude;
+                    negativeExtremus = projectedPoint;
+                }
+            }
+        }
+
+        return (negativeExtremus + barycenter, positiveExtremus + barycenter);
+
     }
 
 

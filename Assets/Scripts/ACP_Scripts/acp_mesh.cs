@@ -51,15 +51,15 @@ public class acp_mesh : MonoBehaviour
 
         Matrix3x3 matCov = acp_Functions.matrixCov(mesh_vertices);
 
-        //matCov.display();
+        matCov.display();
 
         Vector3 eigenvector = acp_Functions.Eigenvector(matCov);
 
-        //print("eigenvector : " + eigenvector.x + " " + eigenvector.y + " " + eigenvector.z);
+        print("eigenvector : " + eigenvector.x + " " + eigenvector.y + " " + eigenvector.z);
 
         List<Vector3> mesh_vertices_projections = acp_Functions.projectedDatas(mesh_vertices, eigenvector);
 
-        _segmentMinMax = acp_Functions.projectedDatasExtremes(mesh_vertices, mesh_vertices_projections, eigenvector);
+        _segmentMinMax = acp_Functions.projectedDatasExtremesSAMI(mesh_vertices, mesh_vertices_projections, eigenvector);
 
         print("min : " + _segmentMinMax.Item1.x + " " + _segmentMinMax.Item1.y + " " + _segmentMinMax.Item1.z);
         print("max : " + _segmentMinMax.Item2.x + " " + _segmentMinMax.Item2.y + " " + _segmentMinMax.Item2.z);
