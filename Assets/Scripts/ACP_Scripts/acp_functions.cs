@@ -47,11 +47,13 @@ public class acp_functions : MonoBehaviour
     {
         testList();
 
-        TestPoints = centrateDatas(TestPoints);
+        Vector3 barycenter = calculateBarycenter(TestPoints);
 
-        Matrix3x3 matCov = matrixCov(TestPoints);
+        Matrix3x3 matCov = matrixCov(TestPoints, barycenter);
 
         //matCov.display();
+
+        TestPoints = centrateDatas(TestPoints, barycenter);
 
         Vector3 eigenvector = Eigenvector(matCov);
 
@@ -59,7 +61,7 @@ public class acp_functions : MonoBehaviour
 
         List<Vector3> TestProjections = projectedDatas(TestPoints, eigenvector);
 
-        (Vector3, Vector3) segmentMinMax = projectedDatasExtremes(TestPoints, TestProjections, eigenvector);
+        (Vector3, Vector3) segmentMinMax = projectedDatasExtremes(TestPoints, TestProjections, eigenvector, barycenter);
 
         //print("min : " + segmentMinMax.Item1.x + " " + segmentMinMax.Item1.y + " " + segmentMinMax.Item1.z);
         //print("max : " + segmentMinMax.Item2.x + " " + segmentMinMax.Item2.y + " " + segmentMinMax.Item2.z);
@@ -67,7 +69,7 @@ public class acp_functions : MonoBehaviour
 
     public Vector3 calculateBarycenter(List<Vector3> points)
     {
-        float bary_x=0f, bary_y = 0f, bary_z = 0f;
+        float bary_x, bary_y, bary_z;
         float somme_x = 0f, somme_y = 0f, somme_z = 0f;
         int nb_points = points.Count;
 
@@ -85,10 +87,8 @@ public class acp_functions : MonoBehaviour
         return new Vector3(bary_x, bary_y, bary_z);
     }
 
-    public List<Vector3> centrateDatas(List<Vector3> points)
+    public List<Vector3> centrateDatas(List<Vector3> points, Vector3 barycenter)
     {
-        Vector3 barycenter = calculateBarycenter(TestPoints);
-
         List<Vector3> v_centrateDatas = new List<Vector3>();
         float x , y, z;
         foreach (Vector3 v in points)
@@ -101,11 +101,10 @@ public class acp_functions : MonoBehaviour
         return v_centrateDatas;
     }
 
-    public Matrix3x3 matrixCov(List<Vector3> points)
+    public Matrix3x3 matrixCov(List<Vector3> points, Vector3 barycenter)
     {
         Matrix3x3 matCov = new Matrix3x3();
         double covariance;
-        Vector3 barycenter = calculateBarycenter(points);
 
         for (int i = 0; i < 3; i++)
         {
@@ -179,7 +178,7 @@ public class acp_functions : MonoBehaviour
         return projectedDatas;
     }
 
-    public (Vector3, Vector3) projectedDatasExtremes(List<Vector3> points_G, List<Vector3> points_projected, Vector3 eigenvector)
+    public (Vector3, Vector3) projectedDatasExtremes(List<Vector3> points_G, List<Vector3> points_projected, Vector3 eigenvector, Vector3 barycenter)
     {
         Vector3 min = new Vector3();
         float minAlpha = 0;
@@ -251,7 +250,6 @@ public class acp_functions : MonoBehaviour
             max.y = points_projected[maxIndex].y + points_G[maxIndex].y;
             max.z = points_projected[maxIndex].z + points_G[maxIndex].z;
         }*/
-        Vector3 barycenter = calculateBarycenter(points_G);
         if (minIndex != -1)
             min = points_projected[minIndex] + barycenter;
         if (maxIndex != -1)
@@ -263,9 +261,8 @@ public class acp_functions : MonoBehaviour
         return pMinMax;
     }
 
-    public (Vector3, Vector3) projectedDatasExtremesSAMI(List<Vector3> points_G, List<Vector3> points_projected, Vector3 eigenvector)
+    public (Vector3, Vector3) projectedDatasExtremesSAMI(List<Vector3> points_G, List<Vector3> points_projected, Vector3 eigenvector, Vector3 barycenter)
     {
-        Vector3 barycenter = calculateBarycenter(points_G);
         float maxPositiveSqrMagnitude = .0f;
         float maxNegativeSqrMagnitude = .0f;
 

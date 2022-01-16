@@ -13,6 +13,7 @@ public class acp_mesh : MonoBehaviour
     public GameObject GO_point_min;
     public GameObject GO_point_max;
     public GameObject GO_point_black;
+    public GameObject GO_point_barycenter;
     private (Vector3, Vector3) _segmentMinMax;
 
 
@@ -44,14 +45,20 @@ public class acp_mesh : MonoBehaviour
                 Instantiate(GO_point_black, mesh_vertices[i], Quaternion.identity);
         }
 
-
         //______ACP______
 
-        mesh_vertices = acp_Functions.centrateDatas(mesh_vertices);
+        Vector3 barycenter = acp_Functions.calculateBarycenter(mesh_vertices);
 
-        Matrix3x3 matCov = acp_Functions.matrixCov(mesh_vertices);
+        /*if (GO_point_barycenter != null)
+        {
+            Instantiate(GO_point_barycenter, barycenter, Quaternion.identity);
+        }*/
+
+        Matrix3x3 matCov = acp_Functions.matrixCov(mesh_vertices, barycenter);
 
         matCov.display();
+
+        mesh_vertices = acp_Functions.centrateDatas(mesh_vertices, barycenter);
 
         Vector3 eigenvector = acp_Functions.Eigenvector(matCov);
 
@@ -59,7 +66,7 @@ public class acp_mesh : MonoBehaviour
 
         List<Vector3> mesh_vertices_projections = acp_Functions.projectedDatas(mesh_vertices, eigenvector);
 
-        _segmentMinMax = acp_Functions.projectedDatasExtremesSAMI(mesh_vertices, mesh_vertices_projections, eigenvector);
+        _segmentMinMax = acp_Functions.projectedDatasExtremesSAMI(mesh_vertices, mesh_vertices_projections, eigenvector, barycenter);
 
         print("min : " + _segmentMinMax.Item1.x + " " + _segmentMinMax.Item1.y + " " + _segmentMinMax.Item1.z);
         print("max : " + _segmentMinMax.Item2.x + " " + _segmentMinMax.Item2.y + " " + _segmentMinMax.Item2.z);
