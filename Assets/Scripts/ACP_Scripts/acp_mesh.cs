@@ -39,20 +39,20 @@ public class acp_mesh : MonoBehaviour
         for (int i=0; i<mesh_vertices.Count; i++)
         {
             mesh_vertices[i] = newRotation * (mesh_vertices[i] - gameObject.transform.position) + gameObject.transform.position;
-            if (GO_point_black != null)
-                Instantiate(GO_point_black, mesh_vertices[i], Quaternion.identity);
+            //if (GO_point_black != null)
+                //Instantiate(GO_point_black, mesh_vertices[i], Quaternion.identity);
         }
 
         //______ACP______
 
-        Vector3 barycenter = acp_Functions.calculateBarycenter(mesh_vertices);
+        //Vector3 barycenter = acp_Functions.calculateBarycenter(mesh_vertices);
 
             /*if (GO_point_barycenter != null)
             {
                 Instantiate(GO_point_barycenter, barycenter, Quaternion.identity);
             }*/
 
-        Matrix3x3 matCov = acp_Functions.matrixCov(mesh_vertices, barycenter);
+        /*Matrix3x3 matCov = acp_Functions.matrixCov(mesh_vertices, barycenter);
 
         matCov.display();
 
@@ -70,7 +70,7 @@ public class acp_mesh : MonoBehaviour
         print("max : " + _segmentMinMax.Item2.x + " " + _segmentMinMax.Item2.y + " " + _segmentMinMax.Item2.z);
 
         Instantiate(GO_point_min, _segmentMinMax.Item1, Quaternion.identity);
-        Instantiate(GO_point_max, _segmentMinMax.Item2, Quaternion.identity);
+        Instantiate(GO_point_max, _segmentMinMax.Item2, Quaternion.identity);*/
     }
 
     void Update()

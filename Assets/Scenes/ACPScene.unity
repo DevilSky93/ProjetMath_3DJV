@@ -1807,6 +1807,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1547262523}
+  - component: {fileID: 1547262524}
   m_Layer: 0
   m_Name: Mannequin
   m_TagString: Untagged
@@ -1838,6 +1839,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1547262524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547262522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435c19e3ef15ed341a13fe2d14db0f04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acp_Functions: {fileID: 117488834}
+  GO_point_min: {fileID: 3363475946982774899, guid: 51aa889ec495549449ceda450d3ca46f,
+    type: 3}
+  GO_point_max: {fileID: 1808042805725996370, guid: ba266d7adb0eec940be6a359c6ad04b1,
+    type: 3}
+  GO_point_black: {fileID: 6966718798465141192, guid: ebaad19677632884397b76719b225e4d,
+    type: 3}
+  GO_point_barycenter: {fileID: 634816650729490634, guid: 56b121f9355d113428485222f370c067,
+    type: 3}
 --- !u!1001 &1575493338
 PrefabInstance:
   m_ObjectHideFlags: 0
