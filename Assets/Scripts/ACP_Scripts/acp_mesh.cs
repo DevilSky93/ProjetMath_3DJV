@@ -34,14 +34,12 @@ public class acp_mesh : MonoBehaviour
             mesh_vertices.Add(v + gameObject.transform.position);
 
         //Rotation
-        Renderer rend = gameObject.GetComponent<Renderer>();
-        Vector3 center = rend.bounds.center;
         Quaternion newRotation = new Quaternion();
-        newRotation.eulerAngles = new Vector3(gameObject.transform.localRotation.eulerAngles.x, gameObject.transform.localRotation.eulerAngles.y, gameObject.transform.localRotation.eulerAngles.z);
+        newRotation.eulerAngles = gameObject.transform.localRotation.eulerAngles;
         for (int i=0; i<mesh_vertices.Count; i++)
         {
-            mesh_vertices[i] = newRotation * (mesh_vertices[i] - center) + center;
-            if(GO_point_black != null)
+            mesh_vertices[i] = newRotation * (mesh_vertices[i] - gameObject.transform.position) + gameObject.transform.position;
+            if (GO_point_black != null)
                 Instantiate(GO_point_black, mesh_vertices[i], Quaternion.identity);
         }
 
@@ -49,10 +47,10 @@ public class acp_mesh : MonoBehaviour
 
         Vector3 barycenter = acp_Functions.calculateBarycenter(mesh_vertices);
 
-        /*if (GO_point_barycenter != null)
-        {
-            Instantiate(GO_point_barycenter, barycenter, Quaternion.identity);
-        }*/
+            /*if (GO_point_barycenter != null)
+            {
+                Instantiate(GO_point_barycenter, barycenter, Quaternion.identity);
+            }*/
 
         Matrix3x3 matCov = acp_Functions.matrixCov(mesh_vertices, barycenter);
 
