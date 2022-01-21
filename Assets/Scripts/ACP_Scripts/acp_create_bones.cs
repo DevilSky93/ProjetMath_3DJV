@@ -9,12 +9,12 @@ public class acp_create_bones : MonoBehaviour
     List<Transform> _trans = new List<Transform>();
     List<MeshFilter> _meshFilter = new List<MeshFilter>();
     List<(Vector3, Vector3)> _segmentMinMax = new List<(Vector3, Vector3)>();
+    List<Transform> _rig = new List<Transform>();
     int _numberLimbs;
 
     public GameObject GO_point_min;
     public GameObject GO_point_max;
     public GameObject GO_point_black;
-    public GameObject GO_point_barycenter;
     
     private void OnDrawGizmos()
     {
@@ -76,8 +76,10 @@ public class acp_create_bones : MonoBehaviour
 
     void createNewJoint(Vector3 p1, Vector3 p2, Vector3 center)
     {
-        GameObject new_joint = new GameObject();
+        GameObject new_joint = new GameObject("rig");
         new_joint.transform.position = center;
+        _rig.Add(new_joint.transform);
+
         _trans.Add(new_joint.transform);
         _meshFilter.Add(null);
         (Vector3, Vector3) new_segment = (p1, p2);
@@ -95,7 +97,7 @@ public class acp_create_bones : MonoBehaviour
         int indexClosestSeg1 = 0;
         int indexClosestSeg2 = 0;
 
-        float minDistance = float.MaxValue;
+        float distanceMin = float.MaxValue;
         float distance;
 
         for (int i = 0; i < 2; ++i)
@@ -103,18 +105,17 @@ public class acp_create_bones : MonoBehaviour
             for (int j = 0; j < 2; ++j)
             {
                 distance = SqrDistance(seg1List[i], seg2List[j]);
-                if (minDistance > distance)
+                if (distanceMin > distance)
                 {
                     indexClosestSeg1 = i;
                     indexClosestSeg2 = j;
-                    minDistance = distance;
+                    distanceMin = distance;
                 }
             }
         }
 
-        print(minDistance);
         Vector3 center = seg1List[indexClosestSeg1] + (seg2List[indexClosestSeg2] - seg1List[indexClosestSeg1]) / 2;
-        if (minDistance < epsilon)
+        if (distanceMin < epsilon)
         {
             if (indexClosestSeg1 == 0)
                 _segmentMinMax[indexSeg1] = (center, _segmentMinMax[indexSeg1].Item2);
@@ -125,6 +126,11 @@ public class acp_create_bones : MonoBehaviour
                 _segmentMinMax[indexSeg2] = (center, _segmentMinMax[indexSeg2].Item2);
             else
                 _segmentMinMax[indexSeg2] = (_segmentMinMax[indexSeg2].Item1, center);
+
+            GameObject new_joint = new GameObject("rig");
+            new_joint.transform.position = center;
+            _rig.Add(new_joint.transform);
+
             return true;
         }
         else
@@ -167,7 +173,7 @@ public class acp_create_bones : MonoBehaviour
         {
             //Child's transform
             Transform trans = gameObject.transform.GetChild(i);
-            print(i + " " + trans);
+            //print(i + " " + trans);
             _trans.Add(trans);
 
             //Childs'mesh
