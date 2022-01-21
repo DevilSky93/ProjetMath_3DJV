@@ -2200,7 +2200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acp_Functions: {fileID: 117488834}
-  _epsilon: 1
+  _epsilon: 0.001
   GO_point_min: {fileID: 3363475946982774899, guid: 51aa889ec495549449ceda450d3ca46f,
     type: 3}
   GO_point_max: {fileID: 1808042805725996370, guid: ba266d7adb0eec940be6a359c6ad04b1,

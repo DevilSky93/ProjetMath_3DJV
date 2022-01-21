@@ -5,7 +5,7 @@ using UnityEngine;
 public class acp_create_bones : MonoBehaviour
 {
     public acp_functions acp_Functions;
-    public float _epsilon;
+    public float _epsilon = .01f;
     List<Transform> _trans = new List<Transform>();
     List<MeshFilter> _meshFilter = new List<MeshFilter>();
     List<(Vector3, Vector3)> _segmentMinMax = new List<(Vector3, Vector3)>();
@@ -74,6 +74,16 @@ public class acp_create_bones : MonoBehaviour
         return x * x + y * y + z * z;
     }
 
+    void createNewJoint(Vector3 p1, Vector3 p2, Vector3 center)
+    {
+        GameObject new_joint = new GameObject();
+        new_joint.transform.position = center;
+        _trans.Add(new_joint.transform);
+        _meshFilter.Add(null);
+        (Vector3, Vector3) new_segment = (p1, p2);
+        _segmentMinMax.Add(new_segment);
+    }
+
     bool adjustJoint(int indexSeg1, int indexSeg2, float epsilon)
     {
         List<Vector3> seg1List = new List<Vector3>();
@@ -102,11 +112,10 @@ public class acp_create_bones : MonoBehaviour
             }
         }
 
-
-
+        print(minDistance);
+        Vector3 center = seg1List[indexClosestSeg1] + (seg2List[indexClosestSeg2] - seg1List[indexClosestSeg1]) / 2;
         if (minDistance < epsilon)
         {
-            Vector3 center = seg1List[indexClosestSeg1] + (seg2List[indexClosestSeg2] - seg1List[indexClosestSeg1]) / 2;
             if (indexClosestSeg1 == 0)
                 _segmentMinMax[indexSeg1] = (center, _segmentMinMax[indexSeg1].Item2);
             else
@@ -119,7 +128,10 @@ public class acp_create_bones : MonoBehaviour
             return true;
         }
         else
+        {
+            createNewJoint(seg1List[indexClosestSeg1], seg2List[indexClosestSeg2], center);
             return false;
+        }
     }
 
     void makeRig()
@@ -132,6 +144,11 @@ public class acp_create_bones : MonoBehaviour
         adjustJoint(7, 8, _epsilon);
         adjustJoint(9, 10, _epsilon);
         adjustJoint(10, 11, _epsilon);
+
+        adjustJoint(1, 2, _epsilon);
+        adjustJoint(1, 4, _epsilon);
+        adjustJoint(1, 6, _epsilon);
+        adjustJoint(1, 9, _epsilon);
     }
 
 
