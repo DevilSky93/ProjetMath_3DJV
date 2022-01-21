@@ -37,8 +37,8 @@ public class acp_create_bones : MonoBehaviour
         for (int i = 0; i < m_v.Count; i++)
         {
             m_v[i] = newRotation * (m_v[i] - trans.position) + trans.position;
-            if (GO_point_black != null)
-                Instantiate(GO_point_black, m_v[i], Quaternion.identity);
+            //if (GO_point_black != null)
+                //Instantiate(GO_point_black, m_v[i], Quaternion.identity);
         }
         return m_v;
     }
@@ -49,20 +49,20 @@ public class acp_create_bones : MonoBehaviour
 
         Matrix3x3 matCov = acp_Functions.matrixCov(mesh_vertices, barycenter);
 
-        matCov.display();
+        //matCov.display();
 
         mesh_vertices = acp_Functions.centrateDatas(mesh_vertices, barycenter);
 
         Vector3 eigenvector = acp_Functions.Eigenvector(matCov);
 
-        print("eigenvector : " + eigenvector.x + " " + eigenvector.y + " " + eigenvector.z);
+        //print("eigenvector : " + eigenvector.x + " " + eigenvector.y + " " + eigenvector.z);
 
         List<Vector3> mesh_vertices_projections = acp_Functions.projectedDatas(mesh_vertices, eigenvector);
 
         _segmentMinMax.Add(acp_Functions.projectedDatasExtremes(mesh_vertices, mesh_vertices_projections, eigenvector, barycenter));
 
-        print("min : " + _segmentMinMax[i].Item1.x + " " + _segmentMinMax[i].Item1.y + " " + _segmentMinMax[i].Item1.z);
-        print("max : " + _segmentMinMax[i].Item2.x + " " + _segmentMinMax[i].Item2.y + " " + _segmentMinMax[i].Item2.z);
+        //print("min : " + _segmentMinMax[i].Item1.x + " " + _segmentMinMax[i].Item1.y + " " + _segmentMinMax[i].Item1.z);
+        //print("max : " + _segmentMinMax[i].Item2.x + " " + _segmentMinMax[i].Item2.y + " " + _segmentMinMax[i].Item2.z);
 
         Instantiate(GO_point_min, _segmentMinMax[i].Item1, Quaternion.identity);
         Instantiate(GO_point_max, _segmentMinMax[i].Item2, Quaternion.identity);
