@@ -136,6 +136,7 @@ public class acp_create_bones : MonoBehaviour
 
     void makeRig()
     {
+        //Centrate Joints
         adjustJoint(0, 1, _epsilon);
         adjustJoint(2, 3, _epsilon);
         adjustJoint(4, 5, _epsilon);
@@ -145,6 +146,7 @@ public class acp_create_bones : MonoBehaviour
         adjustJoint(9, 10, _epsilon);
         adjustJoint(10, 11, _epsilon);
 
+        //Create Joints
         adjustJoint(1, 2, _epsilon);
         adjustJoint(1, 4, _epsilon);
         adjustJoint(1, 6, _epsilon);

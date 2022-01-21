@@ -313,6 +313,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mannequin_armL1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6f65ba3a46645c04daff2ff05ff8a452,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f65ba3a46645c04daff2ff05ff8a452, type: 3}
 --- !u!4 &109222178 stripped
@@ -462,6 +467,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Mannequin_torso
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: de94b3249c52bf446af083ceb39603ef,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de94b3249c52bf446af083ceb39603ef, type: 3}
@@ -659,6 +669,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Mannequin_legL3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a681c6313609e194b9fef955d4ad7d6e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a681c6313609e194b9fef955d4ad7d6e, type: 3}
@@ -1662,6 +1677,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mannequin_legL1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a9aef3b5e823c9944a2658d806515e98,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9aef3b5e823c9944a2658d806515e98, type: 3}
 --- !u!4 &1182499776 stripped
@@ -1736,6 +1756,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Mannequin_legR3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a633cd5fa800e4d47b5af5119e2e866b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a633cd5fa800e4d47b5af5119e2e866b, type: 3}
@@ -1991,6 +2016,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mannequin_legR2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1bd4de3b33249db4fba73911c069d25d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1bd4de3b33249db4fba73911c069d25d, type: 3}
 --- !u!4 &1297723316 stripped
@@ -2099,6 +2129,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mannequin_legR1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4f3eaf584aff80249aefb64decf5d5eb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f3eaf584aff80249aefb64decf5d5eb, type: 3}
 --- !u!4 &1407711833 stripped
@@ -2200,7 +2235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acp_Functions: {fileID: 117488834}
-  _epsilon: 0.001
+  _epsilon: 0.01
   GO_point_min: {fileID: 3363475946982774899, guid: 51aa889ec495549449ceda450d3ca46f,
     type: 3}
   GO_point_max: {fileID: 1808042805725996370, guid: ba266d7adb0eec940be6a359c6ad04b1,
@@ -2424,6 +2459,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mannequin_armR1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9b32f331241876f4098604d20d861602,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b32f331241876f4098604d20d861602, type: 3}
 --- !u!4 &1626446037 stripped
@@ -2499,6 +2539,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mannequin_armR2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7062c396a03f06c4abc433aad65785ac,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7062c396a03f06c4abc433aad65785ac, type: 3}
 --- !u!4 &1652004037 stripped
@@ -2573,6 +2618,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Mannequin_legL2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fce96d4ca6230014b8c1f1f78b4a7ce2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fce96d4ca6230014b8c1f1f78b4a7ce2, type: 3}
@@ -2772,6 +2822,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mannequin_head
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1440ff42f35e28149b6add5ff889aa38,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1440ff42f35e28149b6add5ff889aa38, type: 3}
 --- !u!4 &1982202537 stripped
@@ -2932,6 +2987,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6537936343540691165, guid: e2be0bf6d7c1bdf4c8aecd1742fb9b0b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e2be0bf6d7c1bdf4c8aecd1742fb9b0b,
         type: 3}
       propertyPath: m_Name
@@ -3015,6 +3075,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Mannequin_armL2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8009aea01d026b544a1c00647a716b3b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8009aea01d026b544a1c00647a716b3b, type: 3}
