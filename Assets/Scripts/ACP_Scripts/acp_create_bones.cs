@@ -205,10 +205,4 @@ public class acp_create_bones : MonoBehaviour
         }
 
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

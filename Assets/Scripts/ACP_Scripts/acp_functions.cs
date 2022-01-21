@@ -27,7 +27,6 @@ public class acp_functions : MonoBehaviour
         //λ2 = 1.3199 -> {0.,0.592336,0.805691}
         //λ3 = 0.5 -> {1.,0.,0.}
 
-        //TODO Erreur avec ce dataset
         /*Vector3 ground1p1 = new Vector3(6f, 2f, 4f);
         Vector3 ground1p2 = new Vector3(4f, 6f, 2f);
         Vector3 ground1p3 = new Vector3(6f, 4f, 2f);
@@ -125,16 +124,6 @@ public class acp_functions : MonoBehaviour
     float maxAbsValue(Vector3 v3)
     {
         return Mathf.Max(Mathf.Max(Mathf.Abs(v3.x), Mathf.Abs(v3.y)), Mathf.Abs(v3.z));
-        //Retourner LA PLUS GRANDE COMPOSANTE
-        /*if(Mathf.Abs(v3.x)< Mathf.Abs(v3.y))
-        {
-            if (Mathf.Abs(v3.y) < Mathf.Abs(v3.z))
-                return v3.z;
-            return v3.y;
-        }
-        if (Mathf.Abs(v3.x) < Mathf.Abs(v3.z))
-            return v3.z;
-        return v3.x;*/
     }
 
     public Vector3 Eigenvector(Matrix3x3 matCov)
@@ -183,7 +172,6 @@ public class acp_functions : MonoBehaviour
         float maxPositiveSqrMagnitude = 0f;
         float maxNegativeSqrMagnitude = 0f;
         float alpha;
-
         Vector3 extremusMax = new Vector3();
         Vector3 extremusMin = new Vector3();
 
@@ -216,13 +204,8 @@ public class acp_functions : MonoBehaviour
 
 
     void Start()
-    {
-        mainTest();
+    {   
+        //mainTest();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
