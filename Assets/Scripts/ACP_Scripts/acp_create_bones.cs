@@ -147,7 +147,6 @@ public class acp_create_bones : MonoBehaviour
         adjustJoint(2, 3, _epsilon);
         adjustJoint(4, 5, _epsilon);
         adjustJoint(6, 7, _epsilon);
-        adjustJoint(6, 7, _epsilon);
         adjustJoint(7, 8, _epsilon);
         adjustJoint(9, 10, _epsilon);
         adjustJoint(10, 11, _epsilon);

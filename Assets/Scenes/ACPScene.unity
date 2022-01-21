@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &87208006
 Transform:
   m_ObjectHideFlags: 0
@@ -2203,8 +2203,6 @@ MonoBehaviour:
     type: 3}
   GO_point_black: {fileID: 6966718798465141192, guid: ebaad19677632884397b76719b225e4d,
     type: 3}
-  GO_point_barycenter: {fileID: 634816650729490634, guid: 56b121f9355d113428485222f370c067,
-    type: 3}
 --- !u!1 &1560370953
 GameObject:
   m_ObjectHideFlags: 0
@@ -2241,8 +2239,6 @@ MonoBehaviour:
   GO_point_max: {fileID: 1808042805725996370, guid: ba266d7adb0eec940be6a359c6ad04b1,
     type: 3}
   GO_point_black: {fileID: 6966718798465141192, guid: ebaad19677632884397b76719b225e4d,
-    type: 3}
-  GO_point_barycenter: {fileID: 634816650729490634, guid: 56b121f9355d113428485222f370c067,
     type: 3}
 --- !u!4 &1560370955
 Transform:
