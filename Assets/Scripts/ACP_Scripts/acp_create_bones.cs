@@ -5,10 +5,10 @@ using UnityEngine;
 public class acp_create_bones : MonoBehaviour
 {
     public acp_functions acp_Functions;
-    Transform[] _trans;
-    Mesh[] _mesh;
-    List<Vector3> mesh_vertices;
-    private (Vector3, Vector3) _segmentMinMax;
+    List<Transform> _trans = new List<Transform>();
+    List<MeshFilter> _meshFilter = new List<MeshFilter>();
+    List<(Vector3, Vector3)> _segmentMinMax = new List<(Vector3, Vector3)>();
+    int _numberLimbs;
 
     public GameObject GO_point_min;
     public GameObject GO_point_max;
@@ -18,61 +18,92 @@ public class acp_create_bones : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(this._segmentMinMax.Item1, this._segmentMinMax.Item2);
+        if (_segmentMinMax.Count != 0)
+        {
+            foreach ((Vector3, Vector3) seg in _segmentMinMax)
+                Gizmos.DrawLine(seg.Item1, seg.Item2);
+        }
     }
 
-    List<Vector3> fillMeshVertices()
+    List<Vector3> fillMeshVertices(Transform trans, MeshFilter meshfilter)
     {
+        List<Vector3> m_v = new List<Vector3>();
+        //Position
+        foreach (Vector3 v in meshfilter.mesh.vertices)
+            m_v.Add(v + trans.position);
+        //Rotation
+        Quaternion newRotation = new Quaternion();
+        newRotation.eulerAngles = trans.localRotation.eulerAngles;
+        for (int i = 0; i < m_v.Count; i++)
+        {
+            m_v[i] = newRotation * (m_v[i] - trans.position) + trans.position;
+            if (GO_point_black != null)
+                Instantiate(GO_point_black, m_v[i], Quaternion.identity);
+        }
+        return m_v;
+    }
 
+    void ACP_CreateSegment(List<Vector3> mesh_vertices, int i)
+    {
+        Vector3 barycenter = acp_Functions.calculateBarycenter(mesh_vertices);
+
+        Matrix3x3 matCov = acp_Functions.matrixCov(mesh_vertices, barycenter);
+
+        matCov.display();
+
+        mesh_vertices = acp_Functions.centrateDatas(mesh_vertices, barycenter);
+
+        Vector3 eigenvector = acp_Functions.Eigenvector(matCov);
+
+        print("eigenvector : " + eigenvector.x + " " + eigenvector.y + " " + eigenvector.z);
+
+        List<Vector3> mesh_vertices_projections = acp_Functions.projectedDatas(mesh_vertices, eigenvector);
+
+        _segmentMinMax.Add(acp_Functions.projectedDatasExtremes(mesh_vertices, mesh_vertices_projections, eigenvector, barycenter));
+
+        print("min : " + _segmentMinMax[i].Item1.x + " " + _segmentMinMax[i].Item1.y + " " + _segmentMinMax[i].Item1.z);
+        print("max : " + _segmentMinMax[i].Item2.x + " " + _segmentMinMax[i].Item2.y + " " + _segmentMinMax[i].Item2.z);
+
+        Instantiate(GO_point_min, _segmentMinMax[i].Item1, Quaternion.identity);
+        Instantiate(GO_point_max, _segmentMinMax[i].Item2, Quaternion.identity);
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        Transform trans;
-        for (int go =0; go < gameObject.transform.childCount; go++)
+        _numberLimbs = gameObject.transform.childCount;
+        _trans = new List<Transform>();
+        _meshFilter = new List<MeshFilter>();
+        _segmentMinMax = new List<(Vector3, Vector3)>();
+
+        //All childs
+        for (int i = 0; i < _numberLimbs; i++)
         {
-            trans = gameObject.transform.GetChild(go);
-            MeshFilter meshfilter;
-            mesh_vertices = new List<Vector3>();
-            if (trans.TryGetComponent(out meshfilter))
+            //Child's transform
+            Transform trans = gameObject.transform.GetChild(i);
+            _trans.Add(trans);
+
+            //Childs'mesh
+            MeshFilter meshFilter;
+            if (trans.TryGetComponent(out meshFilter))
             {
-                //Position
-                foreach (Vector3 v in meshfilter.mesh.vertices)
-                    mesh_vertices.Add(v + trans.position);
-                //Rotation
-                Quaternion newRotation = new Quaternion();
-                newRotation.eulerAngles = trans.localRotation.eulerAngles;
-                for (int i = 0; i < mesh_vertices.Count; i++)
-                {
-                    mesh_vertices[i] = newRotation * (mesh_vertices[i] - trans.position) + trans.position;
-                    if (GO_point_black != null)
-                        Instantiate(GO_point_black, mesh_vertices[i], Quaternion.identity);
-                }
+                _meshFilter.Add(meshFilter);
             }
-            Vector3 barycenter = acp_Functions.calculateBarycenter(mesh_vertices);
+            else
+            {
+                _meshFilter.Add(null);
+            }
 
-            Matrix3x3 matCov = acp_Functions.matrixCov(mesh_vertices, barycenter);
-
-            matCov.display();
-
-            mesh_vertices = acp_Functions.centrateDatas(mesh_vertices, barycenter);
-
-            Vector3 eigenvector = acp_Functions.Eigenvector(matCov);
-
-            print("eigenvector : " + eigenvector.x + " " + eigenvector.y + " " + eigenvector.z);
-
-            List<Vector3> mesh_vertices_projections = acp_Functions.projectedDatas(mesh_vertices, eigenvector);
-
-            _segmentMinMax = acp_Functions.projectedDatasExtremesSAMI(mesh_vertices, mesh_vertices_projections, eigenvector, barycenter);
-
-            print("min : " + _segmentMinMax.Item1.x + " " + _segmentMinMax.Item1.y + " " + _segmentMinMax.Item1.z);
-            print("max : " + _segmentMinMax.Item2.x + " " + _segmentMinMax.Item2.y + " " + _segmentMinMax.Item2.z);
-
-            Instantiate(GO_point_min, _segmentMinMax.Item1, Quaternion.identity);
-            Instantiate(GO_point_max, _segmentMinMax.Item2, Quaternion.identity);
+            //Create Segments
+            List<Vector3> mesh_vertices = new List<Vector3>();
+            if (_meshFilter[i] != null)
+            {
+                mesh_vertices = fillMeshVertices(_trans[i], _meshFilter[i]);
+                ACP_CreateSegment(mesh_vertices, i);
+            }
         }
+
     }
 
     // Update is called once per frame

@@ -180,119 +180,37 @@ public class acp_functions : MonoBehaviour
 
     public (Vector3, Vector3) projectedDatasExtremes(List<Vector3> points_G, List<Vector3> points_projected, Vector3 eigenvector, Vector3 barycenter)
     {
-        Vector3 min = new Vector3();
-        float minAlpha = 0;
-        int minIndex = -1;
-        Vector3 max = new Vector3();
-        float maxAlpha = 0;
-        int maxIndex = -1;
+        float maxPositiveSqrMagnitude = 0f;
+        float maxNegativeSqrMagnitude = 0f;
+        float alpha;
 
-        int alphaCalculator = 0;
-        if (eigenvector.x == 0)
-        {
-            alphaCalculator = 1;
-            if (eigenvector.y == 0)
-            {
-                alphaCalculator = 2;
-                if (eigenvector.z == 0)
-                {
-                    print("ERROR : eigenvector = (0,0,0)");
-                }
-            }
-        }
-
-        float tmpAlpha;
-        for(int i = 0; i< points_projected.Count; i++)
-        {
-            tmpAlpha = eigenvector[alphaCalculator] / points_projected[i][alphaCalculator];
-            if (tmpAlpha < 0)
-            {
-                if (minIndex == -1)
-                {
-                    minIndex = i;
-                    minAlpha = tmpAlpha;
-                }
-                else
-                {
-                    if (minAlpha > tmpAlpha)
-                    {
-                        minAlpha = tmpAlpha;
-                    }
-                }
-            }
-            else
-            {
-                if (maxIndex == -1)
-                {
-                    maxIndex = i;
-                    maxAlpha = tmpAlpha;
-                }
-                else
-                {
-                    if (maxAlpha < tmpAlpha)
-                    {
-                        maxAlpha = tmpAlpha;
-                    }
-                }
-            }
-        }
-
-        /*if (minIndex != -1)
-        {
-            min.x = points_projected[minIndex].x + points_G[minIndex].x;
-            min.y = points_projected[minIndex].y + points_G[minIndex].y;
-            min.z = points_projected[minIndex].z + points_G[minIndex].z;
-
-        }
-        if (maxIndex != -1)
-        {
-            max.x = points_projected[maxIndex].x + points_G[maxIndex].x;
-            max.y = points_projected[maxIndex].y + points_G[maxIndex].y;
-            max.z = points_projected[maxIndex].z + points_G[maxIndex].z;
-        }*/
-        if (minIndex != -1)
-            min = points_projected[minIndex] + barycenter;
-        if (maxIndex != -1)
-            max = points_projected[maxIndex] + barycenter;
-
-
-        (Vector3, Vector3) pMinMax = (min, max);
-
-        return pMinMax;
-    }
-
-    public (Vector3, Vector3) projectedDatasExtremesSAMI(List<Vector3> points_G, List<Vector3> points_projected, Vector3 eigenvector, Vector3 barycenter)
-    {
-        float maxPositiveSqrMagnitude = .0f;
-        float maxNegativeSqrMagnitude = .0f;
-
-        Vector3 positiveExtremus = Vector3.zero;
-        Vector3 negativeExtremus = Vector3.zero;
+        Vector3 extremusMax = new Vector3();
+        Vector3 extremusMin = new Vector3();
 
         foreach (Vector3 point in points_G)
         {
             Vector3 projectedPoint = Vector3.Dot(point, eigenvector) * eigenvector;
-            float alpha = Vector3.Dot(projectedPoint, eigenvector);
+            alpha = Vector3.Dot(projectedPoint, eigenvector);
 
-            if(alpha > 0)
+            if(alpha >= 0)
             {
-                if (projectedPoint.sqrMagnitude > maxPositiveSqrMagnitude)
+                if (maxPositiveSqrMagnitude < projectedPoint.sqrMagnitude)
                 {
                     maxPositiveSqrMagnitude = projectedPoint.sqrMagnitude;
-                    positiveExtremus = projectedPoint;
+                    extremusMax = projectedPoint;
                 }
             }
             else if (alpha < 0)
             {
-                if (projectedPoint.sqrMagnitude > maxNegativeSqrMagnitude)
+                if (maxNegativeSqrMagnitude < projectedPoint.sqrMagnitude)
                 {
                     maxNegativeSqrMagnitude = projectedPoint.sqrMagnitude;
-                    negativeExtremus = projectedPoint;
+                    extremusMin = projectedPoint;
                 }
             }
         }
 
-        return (negativeExtremus + barycenter, positiveExtremus + barycenter);
+        return (extremusMin + barycenter, extremusMax + barycenter);
 
     }
 

@@ -47,10 +47,10 @@ public class acp_mesh : MonoBehaviour
 
         //Vector3 barycenter = acp_Functions.calculateBarycenter(mesh_vertices);
 
-            /*if (GO_point_barycenter != null)
-            {
-                Instantiate(GO_point_barycenter, barycenter, Quaternion.identity);
-            }*/
+        /*if (GO_point_barycenter != null)
+        {
+            Instantiate(GO_point_barycenter, barycenter, Quaternion.identity);
+        }*/
 
         /*Matrix3x3 matCov = acp_Functions.matrixCov(mesh_vertices, barycenter);
 
@@ -64,7 +64,7 @@ public class acp_mesh : MonoBehaviour
 
         List<Vector3> mesh_vertices_projections = acp_Functions.projectedDatas(mesh_vertices, eigenvector);
 
-        _segmentMinMax = acp_Functions.projectedDatasExtremesSAMI(mesh_vertices, mesh_vertices_projections, eigenvector, barycenter);
+        _segmentMinMax = acp_Functions.projectedDatasExtremes(mesh_vertices, mesh_vertices_projections, eigenvector, barycenter);
 
         print("min : " + _segmentMinMax.Item1.x + " " + _segmentMinMax.Item1.y + " " + _segmentMinMax.Item1.z);
         print("max : " + _segmentMinMax.Item2.x + " " + _segmentMinMax.Item2.y + " " + _segmentMinMax.Item2.z);
