@@ -5,11 +5,16 @@ using UnityEngine;
 
 public class JarvisAlgo : MonoBehaviour, IAlgorithm
 {
+    public void MainAlgorithm(List<GameObject> points)
+    {
+        JarvisAlgorithm(points);
+    }
+
     public void ExecuteAlgorithm()
     {
         PointsManager.DeleteLines();
         List<GameObject> copy = new List<GameObject>(PointsManager.Points);
-        JarvisAlgorithm(copy);
+        MainAlgorithm(copy);
     }
 
     private void JarvisAlgorithm(List<GameObject> points)
@@ -19,23 +24,24 @@ public class JarvisAlgo : MonoBehaviour, IAlgorithm
         List<GameObject> hull = new List<GameObject>();
 
         int lPoint = 0;
-        for (int i = 0; i < n; i++)
+        for (int i = 1; i < n; i++)
         {
             if (points[i].transform.position.x < points[lPoint].transform.position.x)
             {
-                lPoint = 1;
+                lPoint = i;
             }
         }
 
-        int p = lPoint, q;
+        int p = lPoint;
 
         do
         {
             hull.Add(points[p]);
-            q = (p + 1) % n;
+            var q = (p + 1) % n;
             for (int i = 0; i < n; i++)
             {
-                if (PointsManager.Orientation(points[p].transform.position, points[i].transform.position, points[q].transform.position) == 2)
+                if (PointsManager.Orientation(points[p].transform.position, points[i].transform.position,
+                        points[q].transform.position) == 2)
                 {
                     q = i;
                 }

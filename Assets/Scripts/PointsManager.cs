@@ -8,19 +8,26 @@ public class PointsManager : MonoBehaviour
     public static List<GameObject> Points = new List<GameObject>();
     public static List<LineRenderer> lineRenderers = new List<LineRenderer>();
 
-    private static List<IAlgorithm> _algorithmes;
+    public List<GameObject> Algo;
+    private static List<IAlgorithm> _algorithmes = new List<IAlgorithm>();
 
-    public enum AlgoChoice
-    {
-        GrahamScan = 0,
-        Jarvis = 1
-    }
-
-    public static AlgoChoice Choice;
+    // public enum AlgoChoice
+    // {
+    //     GrahamScan = 0,
+    //     Jarvis = 1,
+    //     Triangulation2d = 2
+    // }
+    //
+    // public static AlgoChoice Choice;
+    public static int Choice;
 
     private void Start()
     {
-        _algorithmes = FindObjectsOfType<MonoBehaviour>().OfType<IAlgorithm>().ToList();
+        // _algorithmes = FindObjectsOfType<MonoBehaviour>().OfType<IAlgorithm>().ToList();
+        foreach (var algo in Algo)
+        {
+            _algorithmes.Add(algo.GetComponent<IAlgorithm>());
+        }
     }
 
     public static int Orientation(Vector3 p, Vector3 q, Vector3 r)
@@ -49,7 +56,7 @@ public class PointsManager : MonoBehaviour
         lr.SetPosition(0, p1.transform.position);
         lr.SetPosition(1, p2.transform.position);
         
-        PointsManager.lineRenderers.Add(lr);
+        lineRenderers.Add(lr);
     }
 
     public static void ExecuteAlgorithm()
@@ -75,5 +82,13 @@ public class PointsManager : MonoBehaviour
             Destroy(Points[i].gameObject);
             Points.RemoveAt(i);
         }
+    }
+
+    public static void CancelPoints()
+    {
+        if (Points.Count <= 0) return;
+        var lastPointIndex = Points.Count - 1;
+        Destroy(Points[lastPointIndex].gameObject);
+        Points.RemoveAt(lastPointIndex);
     }
 }

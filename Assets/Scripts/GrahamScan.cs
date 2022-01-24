@@ -45,13 +45,7 @@ public class GrahamScan : MonoBehaviour, IAlgorithm
         GameObject res = stack.Peek();
         stack.Push(p);
         return res;
-    }
-
-    private float DistSq(Vector3 p1, Vector3 p2)
-    {
-        return (p1.x - p2.x) * (p1.x - p2.x) +
-               (p1.y - p2.y) * (p1.y - p2.y);
-    }
+    }   
 
     private void GrahamScanAlgo(List<GameObject> points)
     {
@@ -63,7 +57,7 @@ public class GrahamScan : MonoBehaviour, IAlgorithm
         {
             float y = points[i].transform.position.y;
 
-            if (y < min || Math.Abs(yMin - y) < 1 && points[i].transform.position.x < points[min].transform.position.x)
+            if (y < min || Math.Abs(yMin - y) < 0.01 && points[i].transform.position.x < points[min].transform.position.x)
             {
                 yMin = points[i].transform.position.y;
                 min = i;
@@ -76,10 +70,10 @@ public class GrahamScan : MonoBehaviour, IAlgorithm
 
         OrientationComparer oc = new OrientationComparer(p0);
 
-        points.Sort(0, points.Count, oc);
+        points.Sort(1, points.Count-1, oc);
 
         int m = 1;
-        for (int i = 0; i < n; i++)
+        for (int i = 1; i < n; i++)
         {
             while (i < n - 1 && PointsManager.Orientation(p0.transform.position, points[i].transform.position,
                        points[i + 1].transform.position) == 0)
@@ -99,7 +93,7 @@ public class GrahamScan : MonoBehaviour, IAlgorithm
         Stack<GameObject> stack = new Stack<GameObject>();
         stack.Push(points[0]);
         stack.Push(points[1]);
-        stack.Push(points[2]);
+        stack.Push(points[2]); 
         
         for (int i = 3; i < m; i++)
         {
@@ -126,11 +120,16 @@ public class GrahamScan : MonoBehaviour, IAlgorithm
             }
         }
     }
+    
+    public void MainAlgorithm(List<GameObject> points)
+    {
+        GrahamScanAlgo(points);
+    }
 
     public void ExecuteAlgorithm()
     {
         PointsManager.DeleteLines();
         List<GameObject> copy = new List<GameObject>(PointsManager.Points);
-        GrahamScanAlgo(copy);
+        MainAlgorithm(copy);
     }
 }
