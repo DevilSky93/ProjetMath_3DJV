@@ -17,7 +17,8 @@ namespace UI
             List<string> items = new List<string>
             {
                 "Graham Scan",
-                "Jarvis"
+                "Jarvis",
+                "Triangulation 2D"
             };
 
             foreach (var item in items)
@@ -38,7 +39,7 @@ namespace UI
         private void DropdownItemSelected(Dropdown dropdown)
         {
             int index = dropdown.value;
-            PointsManager.Choice = (PointsManager.AlgoChoice)index;
+            PointsManager.Choice = index;
             textBox.text = dropdown.options[index].text;
         }
 
@@ -51,6 +52,12 @@ namespace UI
         {
             PointsManager.DeleteLines();
             PointsManager.DeletePoints();
+        }
+        
+        public void CancelPoints()
+        {
+            PointsManager.DeleteLines();
+            PointsManager.CancelPoints();
         }
     }
 }
