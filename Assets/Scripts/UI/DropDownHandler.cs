@@ -18,7 +18,8 @@ namespace UI
             {
                 "Graham Scan",
                 "Jarvis",
-                "Triangulation 2D"
+                "Triangulation 2D",
+                "Triangulation Delaunay"
             };
 
             foreach (var item in items)

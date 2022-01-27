@@ -16,6 +16,7 @@ public class PointsManager : MonoBehaviour
     //     GrahamScan = 0,
     //     Jarvis = 1,
     //     Triangulation2d = 2
+    //     TriangulationDelaunay = 3
     // }
     //
     // public static AlgoChoice Choice;
