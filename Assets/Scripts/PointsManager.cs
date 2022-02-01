@@ -33,8 +33,10 @@ public class PointsManager : MonoBehaviour
 
     public static int Orientation(Vector3 p, Vector3 q, Vector3 r)
     {
-        int val = (int)((q.y - p.y) * (r.x - q.x) -
-                        (q.x - p.x) * (r.y - q.y));
+        /*int val = (int)((q.y - p.y) * (r.x - q.x) -
+                        (q.x - p.x) * (r.y - q.y));*/ //CRINGE  
+        int val = (int)((q.x - p.x) * (r.y - p.y) -
+                      (r.x - p.x) * (q.y - p.y));
         if (val == 0) return 0;
         return (val > 0) ? 1 : 2;
     }

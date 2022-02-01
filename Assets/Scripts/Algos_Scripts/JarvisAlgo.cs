@@ -35,9 +35,10 @@ public class JarvisAlgo : MonoBehaviour, IAlgorithm
         }
 
         int p = lPoint;
-
+        int cpt = 0;
         do
         {
+            cpt++;
             hull.Add(points[p]);
             var q = (p + 1) % n;
             for (int i = 0; i < n; i++)
@@ -51,6 +52,7 @@ public class JarvisAlgo : MonoBehaviour, IAlgorithm
 
             p = q;
         } while (p != lPoint);
+        //} while (cpt<10);
 
         for (int i = 0; i < hull.Count; i++)
         {
