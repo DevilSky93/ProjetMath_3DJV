@@ -49,6 +49,8 @@ public class GrahamScan : MonoBehaviour, IAlgorithm
 
     private void GrahamScanAlgo(List<GameObject> points)
     {
+        //TODO Réparer pour que ce soit aussi fonctionnel que Jarvis
+
         // Point le plus haut en y
         float yMin = points[0].transform.position.y;
         int min = 0;
