@@ -18,7 +18,7 @@ namespace UI
             {
                 "Graham Scan",
                 "Jarvis",
-                "Triangulation 2D",
+                "Triangulation Incrémentale",
                 "Triangulation Delaunay"
             };
 

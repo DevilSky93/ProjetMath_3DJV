@@ -9,7 +9,12 @@ public class JarvisAlgo : MonoBehaviour, IAlgorithm
 {
     public void MainAlgorithm(List<GameObject> points)
     {
-        JarvisAlgorithm(points);
+        List<GameObject> hull = JarvisAlgorithm(points);
+
+        for (int i = 0; i < hull.Count; i++)
+        {
+            PointsManager.DrawLines(hull[i], i + 1 >= hull.Count ? hull[0] : hull[i + 1]);
+        }
     }
 
     public void ExecuteAlgorithm()
@@ -19,10 +24,10 @@ public class JarvisAlgo : MonoBehaviour, IAlgorithm
         MainAlgorithm(copy);
     }
 
-    private void JarvisAlgorithm(List<GameObject> points)
+    private List<GameObject> JarvisAlgorithm(List<GameObject> points)
     {
         int n = PointsManager.Points.Count;
-        if (n < 3) return;
+        if (n < 3) return points;
         List<GameObject> hull = new List<GameObject>();
 
         int lPoint = 0;
@@ -54,9 +59,6 @@ public class JarvisAlgo : MonoBehaviour, IAlgorithm
         } while (p != lPoint);
         //} while (cpt<10);
 
-        for (int i = 0; i < hull.Count; i++)
-        {
-            PointsManager.DrawLines(hull[i], i + 1 >= hull.Count ? hull[0] : hull[i + 1]);
-        }
+        return hull;
     }
 }
